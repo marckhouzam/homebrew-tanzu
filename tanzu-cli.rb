@@ -27,11 +27,26 @@ class TanzuCli < Formula
   sha256 checksums["#{$os}-#{$arch}"]
 
   def install
+    # Intall the tanzu CLI
     bin.install "v#{version}/tanzu-core-#{$os}_#{$arch}" => "tanzu"
+
+    # Setup shell completion
+    output = Utils.safe_popen_read(bin/"tanzu", "completion", "bash")
+    (bash_completion/"tanzu").write output
+
+    output = Utils.safe_popen_read(bin/"tanzu", "completion", "zsh")
+    (zsh_completion/"_tanzu").write output
+
+    # Fish is not supported yet
+    # output = Utils.safe_popen_read(bin/"tanzu", "completion", "fish")
+    # (fish_completion/"tanzu.fish").write output
   end
 
-  # Homebrew requires tests.
-#  test do
-#    assert_match("ceaa474", shell_output("#{bin}/tanzu version", 2))
-#  end
+  # This verifies the installation
+  test do
+    assert_match "version: v#{version}", shell_output("#{bin}/tanzu version")
+
+    output = shell_output("#{bin}/tanzu config get")
+    assert_match "kind: ClientConfig", output
+  end
 end
