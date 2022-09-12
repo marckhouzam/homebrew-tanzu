@@ -4,7 +4,7 @@
 class TanzuCli < Formula
   desc "The bare-bones Tanzu command-line tool"
   homepage "https://github.com/vmware-tanzu/tanzu-framework"
-  version "0.25.0"
+  version "0.26.0"
   head "https://github.com/vmware-tanzu/tanzu-framework.git", branch: "main"
 
   checksums = {
